@@ -18,6 +18,11 @@ namespace WrestleManiaTD
 
         }
 
+        public void Load(ContentManager content)
+        {
+            sprite.Load(content, "hero");
+        }
+
         public void Update(float deltaTime)
         {
             sprite.Update(deltaTime);

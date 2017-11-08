@@ -12,10 +12,43 @@ namespace WrestleManiaTD
     /// </summary>
     public class GameManager : Game
     {
+
+        public static int tile = 64;
+        // abitrary choice for 1m (1 tile = 1 meter)
+        public static float meter = tile;
+        // very exaggerated gravity (6x)
+        public static float gravity = meter * 9.8f * 6.0f;
+        // max vertical speed (10 tiles/sec horizontal, 15 tiles/sec vertical)
+        public static Vector2 maxVelocity = new Vector2(meter * 10, meter * 15);
+        // horizontal acceleration - take 1/2 second to reach max velocity
+        public static float acceleration = maxVelocity.X * 2;
+        // horizontal friction - take 1/6 second to stop from max velocity
+        public static float friction = maxVelocity.X * 6;
+
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        Player player = new Player();
 
+        Camera2D camera = null;
+        TiledMap map = null;
+        TiledTileLayer collisionLayer;
+
+        public int ScreenWidth
+        {
+            get
+            {
+                return graphics.GraphicsDevice.Viewport.Width;
+            }
+        }
+
+        public int ScreenHeight
+        {
+            get
+            {
+                return graphics.GraphicsDevice.Viewport.Height;
+            }
+        }
 
         public GameManager()
         {
@@ -23,12 +56,6 @@ namespace WrestleManiaTD
             Content.RootDirectory = "Content";
         }
 
-        /// <summary>
-        /// Allows the game to perform any initialization it needs to before starting to run.
-        /// This is where it can query for any required services and load any non-graphic
-        /// related content.  Calling base.Initialize will enumerate through any components
-        /// and initialize them as well.
-        /// </summary>
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
@@ -42,10 +69,23 @@ namespace WrestleManiaTD
         /// </summary>
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+                        
+            player.Load(Content);
 
-            // TODO: use this.Content to load your game content here
+            var viewportAdapter = new BoxingViewportAdapter(Window, GraphicsDevice,
+                ScreenWidth, ScreenHeight);
+
+            camera = new Camera2D(viewportAdapter);
+            camera.Position = new Vector2(0, ScreenHeight);
+
+            map = Content.Load<TiledMap>("Map");
+            foreach (TiledTileLayer layer in map.TileLayers)
+            {
+                if (layer.Name == "Floor")
+                    collisionLayer = layer;
+            }
+
         }
 
         /// <summary>
@@ -57,17 +97,14 @@ namespace WrestleManiaTD
             // TODO: Unload any non ContentManager content here
         }
 
-        /// <summary>
-        /// Allows the game to run logic such as updating the world,
-        /// checking for collisions, gathering input, and playing audio.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
             // TODO: Add your update logic here
+            float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            player.Update(deltaTime);
 
             base.Update(gameTime);
         }
@@ -80,9 +117,53 @@ namespace WrestleManiaTD
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+            var transformMatrix = camera.GetViewMatrix();
+
+            //spriteBatch.Begin(transformMatrix: transformMatrix);
+            spriteBatch.Begin();
+            map.Draw(spriteBatch);
+
+            player.Draw(spriteBatch);
+
+
+                      
+
+            spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        public int PixelToTile(float pixelCoord)
+        {
+            return (int)Math.Floor(pixelCoord / tile);
+        }
+
+        public int TileToPixel(int tileCoord)
+        {
+            return tileCoord * tileCoord;
+        }
+
+        public int CellAtPixelCoord(Vector2 pixelCoords)
+        {
+            if (pixelCoords.X < 0 ||
+                pixelCoords.X > map.WidthInPixels || pixelCoords.Y < 0)
+                return 1;
+
+            if (pixelCoords.Y > map.HeightInPixels)
+                return 0;
+            return CellAtTileCoord(PixelToTile(pixelCoords.X), PixelToTile(pixelCoords.Y));
+        }
+
+        public int CellAtTileCoord(int tx, int ty)
+        {
+            if (tx < 0 || tx >= map.Width || ty < 0)
+                return 1;
+
+            if (ty >= map.Height)
+                return 0;
+
+            TiledTile tile = collisionLayer.GetTile(tx, ty);
+            return tile.Id;
         }
     }
 }
