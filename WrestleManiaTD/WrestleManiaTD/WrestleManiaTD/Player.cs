@@ -20,7 +20,10 @@ namespace WrestleManiaTD
 
         public void Load(ContentManager content)
         {
-            sprite.Load(content, "hero");
+            AnimatedTexture animation = new AnimatedTexture(Vector2.Zero, 0, 1, 1);
+            animation.Load(content, "hero", 1, 0);
+
+            sprite.Add(animation, 16, 0);
         }
 
         public void Update(float deltaTime)

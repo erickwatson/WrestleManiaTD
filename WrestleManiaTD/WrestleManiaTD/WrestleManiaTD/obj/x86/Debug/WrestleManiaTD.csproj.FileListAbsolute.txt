@@ -27,3 +27,4 @@ L:\WrestleManiaTD\WrestleManiaTD\WrestleManiaTD\WrestleManiaTD\bin\Windows\x86\D
 L:\WrestleManiaTD\WrestleManiaTD\WrestleManiaTD\WrestleManiaTD\obj\x86\Debug\WrestleManiaTD.exe
 L:\WrestleManiaTD\WrestleManiaTD\WrestleManiaTD\WrestleManiaTD\obj\x86\Debug\WrestleManiaTD.pdb
 L:\WrestleManiaTD\WrestleManiaTD\WrestleManiaTD\WrestleManiaTD\bin\Windows\x86\Debug\Content\hero.xnb
+L:\WrestleManiaTD\WrestleManiaTD\WrestleManiaTD\WrestleManiaTD\bin\Windows\x86\Debug\Content\rock_large.xnb

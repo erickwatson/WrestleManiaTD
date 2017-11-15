@@ -30,6 +30,8 @@ namespace WrestleManiaTD
 
         Player player = new Player();
 
+        Enemy enemy = new Enemy();
+
         Camera2D camera = null;
         TiledMap map = null;
         TiledTileLayer collisionLayer;
@@ -72,6 +74,8 @@ namespace WrestleManiaTD
             spriteBatch = new SpriteBatch(GraphicsDevice);
                         
             player.Load(Content);
+            enemy.Load(Content);
+
 
             var viewportAdapter = new BoxingViewportAdapter(Window, GraphicsDevice,
                 ScreenWidth, ScreenHeight);
@@ -105,7 +109,26 @@ namespace WrestleManiaTD
             // TODO: Add your update logic here
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             player.Update(deltaTime);
+            enemy.Update(deltaTime);
 
+            Vector2 pos = new Vector2((int)enemy.Position.X, (int)enemy.Position.Y);
+            Vector2 goal = new Vector2((int)enemy.Goal.X, (int)enemy.Goal.Y);
+
+            if (pos == goal)
+            {
+                if (enemy.Goal == new Vector2(100, 100))
+                {
+                    enemy.Goal = new Vector2(0, 0);
+                }else if (enemy.Goal == new Vector2(0, 0))
+                {
+                    enemy.Goal = new Vector2(100, 0);
+                }else if (enemy.Goal == new Vector2(100, 0))
+                {
+                    enemy.Goal = new Vector2(100, 100);
+                }
+            }
+            //Distance between two points, figure out
+            //(Math.Pow(x1-x2,2)+Math.Pow(y1-y2,2)) < (d*d);
             base.Update(gameTime);
         }
 
@@ -124,7 +147,7 @@ namespace WrestleManiaTD
             map.Draw(spriteBatch);
 
             player.Draw(spriteBatch);
-
+            enemy.Draw(spriteBatch);
 
                       
 
