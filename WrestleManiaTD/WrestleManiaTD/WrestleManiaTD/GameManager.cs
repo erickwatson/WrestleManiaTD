@@ -17,7 +17,7 @@ namespace WrestleManiaTD
         // abitrary choice for 1m (1 tile = 1 meter)
         public static float meter = tile;
         // very exaggerated gravity (6x)
-        public static float gravity = meter * 9.8f * 6.0f;
+        public static float gravity = meter * 10f * 10f;
         // max vertical speed (10 tiles/sec horizontal, 15 tiles/sec vertical)
         public static Vector2 maxVelocity = new Vector2(meter * 10, meter * 15);
         // horizontal acceleration - take 1/2 second to reach max velocity
@@ -35,6 +35,8 @@ namespace WrestleManiaTD
         Camera2D camera = null;
         TiledMap map = null;
         TiledTileLayer collisionLayer;
+
+
 
         public int ScreenWidth
         {
@@ -106,6 +108,7 @@ namespace WrestleManiaTD
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+
             // TODO: Add your update logic here
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             player.Update(deltaTime);
@@ -114,19 +117,42 @@ namespace WrestleManiaTD
             Vector2 pos = new Vector2((int)enemy.Position.X, (int)enemy.Position.Y);
             Vector2 goal = new Vector2((int)enemy.Goal.X, (int)enemy.Goal.Y);
 
+            // going to need to put this in a class
+            // https://stackoverflow.com/questions/38402480/c-sharp-declare-a-static-list
+
+            List<Coord> path = new List<Coord>
+                {
+                new Coord() { X = 100, Y = 0 },
+                new Coord() { X = 100, Y = 100 },
+                new Coord() { X = 200, Y = 100 }
+                };
+
             if (pos == goal)
             {
-                if (enemy.Goal == new Vector2(100, 100))
+                //if (enemy.Goal == new Vector2(100, 100))
+                //{
+                //    enemy.Goal = new Vector2(0, 0);
+                //}else if (enemy.Goal == new Vector2(0, 0))
+                //{
+                //    enemy.Goal = new Vector2(200, 200);
+                //}else if (enemy.Goal == new Vector2(100, 0))
+                //{
+                //    enemy.Goal = new Vector2(100, 100);
+                //}
+                if  (enemy.Goal == new Vector2(path[0].X, path[0].Y))
                 {
-                    enemy.Goal = new Vector2(0, 0);
-                }else if (enemy.Goal == new Vector2(0, 0))
-                {
-                    enemy.Goal = new Vector2(100, 0);
-                }else if (enemy.Goal == new Vector2(100, 0))
-                {
-                    enemy.Goal = new Vector2(100, 100);
+                    path.RemoveAt(0);
+                    enemy.Goal = new Vector2(path[0].X, path[0].Y);
                 }
+                //else
+                //{
+                //    enemy.Goal = new Vector2(0, 0);
+                //}
+
+
             }
+
+
             //Distance between two points, figure out
             //(Math.Pow(x1-x2,2)+Math.Pow(y1-y2,2)) < (d*d);
             base.Update(gameTime);
