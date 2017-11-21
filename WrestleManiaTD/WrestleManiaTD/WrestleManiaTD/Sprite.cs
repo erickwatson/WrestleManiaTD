@@ -14,6 +14,7 @@ namespace WrestleManiaTD
         public Vector2 position = Vector2.Zero;
         public Vector2 offset = Vector2.Zero;
 
+
         Texture2D texture;
 
         public Sprite()
@@ -24,6 +25,7 @@ namespace WrestleManiaTD
         public void Load(ContentManager content, string asset)
         {
             texture = content.Load<Texture2D>(asset);
+            
         }
 
         public void Update(float deltaTime)

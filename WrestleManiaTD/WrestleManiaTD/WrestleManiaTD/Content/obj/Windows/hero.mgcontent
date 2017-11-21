@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>L:/WrestleManiaTD/WrestleManiaTD/WrestleManiaTD/WrestleManiaTD/Content/hero.png</SourceFile>
-  <SourceTime>2017-09-13T17:51:40.7819901+09:30</SourceTime>
-  <DestFile>L:/WrestleManiaTD/WrestleManiaTD/WrestleManiaTD/WrestleManiaTD/Content/bin/Windows/hero.xnb</DestFile>
-  <DestTime>2017-11-08T19:23:39.6495858+10:30</DestTime>
+  <SourceFile>J:/GITREPO/WrestleManiaTD/WrestleManiaTD/WrestleManiaTD/WrestleManiaTD/Content/hero.png</SourceFile>
+  <SourceTime>2017-11-11T16:05:10.5765755+10:30</SourceTime>
+  <DestFile>J:/GITREPO/WrestleManiaTD/WrestleManiaTD/WrestleManiaTD/WrestleManiaTD/Content/bin/Windows/hero.xnb</DestFile>
+  <DestTime>2017-11-15T02:17:59.6370469+10:30</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2016-03-30T17:06:08+10:30</ImporterTime>
   <Processor>TextureProcessor</Processor>

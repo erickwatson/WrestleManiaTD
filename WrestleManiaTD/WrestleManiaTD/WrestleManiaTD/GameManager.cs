@@ -29,9 +29,13 @@ namespace WrestleManiaTD
         SpriteBatch spriteBatch;
 
         Player player = new Player();
+        float playerSpeed = 50;
+        Vector2 playerPosition = new Vector2(0, 0);
+        Vector2 playerOffset = new Vector2(0, 0);
 
         Camera2D camera = null;
         TiledMap map = null;
+
         TiledTileLayer collisionLayer;
 
         public int ScreenWidth
@@ -58,7 +62,9 @@ namespace WrestleManiaTD
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+            playerPosition = new Vector2(
+                                    graphics.GraphicsDevice.Viewport.Width / 2,
+                                    graphics.GraphicsDevice.Viewport.Height / 2);
 
             base.Initialize();
         }
@@ -73,6 +79,8 @@ namespace WrestleManiaTD
                         
             player.Load(Content);
 
+            
+
             var viewportAdapter = new BoxingViewportAdapter(Window, GraphicsDevice,
                 ScreenWidth, ScreenHeight);
 
@@ -80,10 +88,13 @@ namespace WrestleManiaTD
             camera.Position = new Vector2(0, ScreenHeight);
 
             map = Content.Load<TiledMap>("Map");
+
             foreach (TiledTileLayer layer in map.TileLayers)
             {
                 if (layer.Name == "Floor")
                     collisionLayer = layer;
+
+                
             }
 
         }
@@ -119,12 +130,12 @@ namespace WrestleManiaTD
 
             var transformMatrix = camera.GetViewMatrix();
 
-            //spriteBatch.Begin(transformMatrix: transformMatrix);
+            
             spriteBatch.Begin();
-            map.Draw(spriteBatch);
 
+            //spriteBatch.Begin(transformMatrix: transformMatrix);
             player.Draw(spriteBatch);
-
+            map.Draw(spriteBatch);
 
                       
 
