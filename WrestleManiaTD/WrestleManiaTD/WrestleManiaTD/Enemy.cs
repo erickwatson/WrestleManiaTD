@@ -15,7 +15,11 @@ namespace WrestleManiaTD
         // keep a reference to the Game object to check for collisions on the map
         //GameManager game = null;
         Vector2 velocity = Vector2.Zero;
+        // Game Canvas is approx 720x480
+
         public Vector2 Goal = new Vector2(100,100);
+
+        public Vector2 End = new Vector2(720, 240);
         //float pause = 0;
         //bool moveRight = true;
         //static float enemyAcceleration = GameManager.acceleration / 5.0f;
@@ -46,9 +50,14 @@ namespace WrestleManiaTD
         public void Update(float deltaTime)
         {
             //(Position - Goal).Normalize
-            Vector2 direction = (Goal - Position);
-            direction.Normalize();
-            Position += direction;
+
+            double temp = Math.Pow(Position.X - End.X, 2) + Math.Pow(Position.Y - End.Y, 2);
+            if (!(temp < (10)))
+            {
+                Vector2 direction = (Goal - Position);
+                direction.Normalize();
+                Position += direction;
+            }
 
             sprite.Update(deltaTime);
         }

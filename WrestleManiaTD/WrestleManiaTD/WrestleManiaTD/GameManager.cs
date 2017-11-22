@@ -35,6 +35,7 @@ namespace WrestleManiaTD
         Camera2D camera = null;
         TiledMap map = null;
         TiledTileLayer collisionLayer;
+        List<Coord> path;
 
 
 
@@ -77,7 +78,14 @@ namespace WrestleManiaTD
                         
             player.Load(Content);
             enemy.Load(Content);
-
+            
+            path = new List<Coord>
+                {
+                new Coord() { X = 100, Y = 100 },
+                new Coord() { X = 0, Y = 440 },
+                new Coord() { X = 20, Y = 400 },
+                new Coord() { X = 720, Y = 240 }
+                };
 
             var viewportAdapter = new BoxingViewportAdapter(Window, GraphicsDevice,
                 ScreenWidth, ScreenHeight);
@@ -120,13 +128,15 @@ namespace WrestleManiaTD
             // going to need to put this in a class
             // https://stackoverflow.com/questions/38402480/c-sharp-declare-a-static-list
 
-            List<Coord> path = new List<Coord>
-                {
-                new Coord() { X = 100, Y = 0 },
-                new Coord() { X = 100, Y = 100 },
-                new Coord() { X = 200, Y = 100 }
-                };
 
+            double temp = Math.Pow(enemy.Position.X - enemy.Goal.X, 2) + Math.Pow(enemy.Position.Y - enemy.Goal.Y, 2);
+            if (temp < (10))
+            {
+                Coord old = path[0];
+                path.RemoveAt(0);
+                path.Add(old);
+                enemy.Goal = new Vector2(path[0].X, path[0].Y);
+            }
             if (pos == goal)
             {
                 //if (enemy.Goal == new Vector2(100, 100))
@@ -139,11 +149,12 @@ namespace WrestleManiaTD
                 //{
                 //    enemy.Goal = new Vector2(100, 100);
                 //}
-                if  (enemy.Goal == new Vector2(path[0].X, path[0].Y))
-                {
-                    path.RemoveAt(0);
-                    enemy.Goal = new Vector2(path[0].X, path[0].Y);
-                }
+                
+                //if  (enemy.Goal == new Vector2(path[0].X, path[0].Y))
+                //{
+                //    path.RemoveAt(0);
+                //    enemy.Goal = new Vector2(path[0].X, path[0].Y);
+                //}
                 //else
                 //{
                 //    enemy.Goal = new Vector2(0, 0);
