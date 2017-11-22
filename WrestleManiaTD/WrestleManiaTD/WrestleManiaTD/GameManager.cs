@@ -78,7 +78,7 @@ namespace WrestleManiaTD
                         
             player.Load(Content);
             enemy.Load(Content);
-            
+            // Game Canvas is approx 720x480
             path = new List<Coord>
                 {
                 new Coord() { X = 100, Y = 100 },
