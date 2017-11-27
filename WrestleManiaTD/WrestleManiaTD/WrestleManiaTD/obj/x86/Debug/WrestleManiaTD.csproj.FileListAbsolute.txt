@@ -58,3 +58,4 @@ J:\GITREPO\WrestleManiaTD\WrestleManiaTD\WrestleManiaTD\WrestleManiaTD\bin\Windo
 J:\GITREPO\WrestleManiaTD\WrestleManiaTD\WrestleManiaTD\WrestleManiaTD\obj\x86\Debug\WrestleManiaTD.csprojResolveAssemblyReference.cache
 J:\GITREPO\WrestleManiaTD\WrestleManiaTD\WrestleManiaTD\WrestleManiaTD\obj\x86\Debug\WrestleManiaTD.exe
 J:\GITREPO\WrestleManiaTD\WrestleManiaTD\WrestleManiaTD\WrestleManiaTD\obj\x86\Debug\WrestleManiaTD.pdb
+L:\WrestleManiaTD\WrestleManiaTD\WrestleManiaTD\WrestleManiaTD\bin\Windows\x86\Debug\Content\MachoMan.xnb

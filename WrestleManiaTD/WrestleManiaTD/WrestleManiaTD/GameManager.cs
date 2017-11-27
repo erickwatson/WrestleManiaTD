@@ -30,12 +30,12 @@ namespace WrestleManiaTD
 
         Player player = new Player();
 
-        Enemy enemy = new Enemy();
+        List<Enemy> enemies;//= new Enemy(-100, -100);
 
         Camera2D camera = null;
         TiledMap map = null;
         TiledTileLayer collisionLayer;
-        List<Coord> path;
+        
 
 
 
@@ -74,18 +74,21 @@ namespace WrestleManiaTD
         /// </summary>
         protected override void LoadContent()
         {
+            enemies = new List<Enemy>();
+            for(int i = 0; i < 10; i++)
+            {
+                enemies.Add(new Enemy(-100 * i, 220));
+            }
+
             spriteBatch = new SpriteBatch(GraphicsDevice);
                         
             player.Load(Content);
-            enemy.Load(Content);
+            foreach (Enemy e in enemies)
+            {
+                e.Load(Content);
+            }
             // Game Canvas is approx 720x480
-            path = new List<Coord>
-                {
-                new Coord() { X = 100, Y = 100 },
-                new Coord() { X = 0, Y = 440 },
-                new Coord() { X = 20, Y = 400 },
-                new Coord() { X = 720, Y = 240 }
-                };
+            
 
             var viewportAdapter = new BoxingViewportAdapter(Window, GraphicsDevice,
                 ScreenWidth, ScreenHeight);
@@ -120,49 +123,17 @@ namespace WrestleManiaTD
             // TODO: Add your update logic here
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             player.Update(deltaTime);
-            enemy.Update(deltaTime);
 
-            Vector2 pos = new Vector2((int)enemy.Position.X, (int)enemy.Position.Y);
-            Vector2 goal = new Vector2((int)enemy.Goal.X, (int)enemy.Goal.Y);
-
-            // going to need to put this in a class
-            // https://stackoverflow.com/questions/38402480/c-sharp-declare-a-static-list
-
-
-            double temp = Math.Pow(enemy.Position.X - enemy.Goal.X, 2) + Math.Pow(enemy.Position.Y - enemy.Goal.Y, 2);
-            if (temp < (10))
+            foreach (Enemy e in enemies)
             {
-                Coord old = path[0];
-                path.RemoveAt(0);
-                path.Add(old);
-                enemy.Goal = new Vector2(path[0].X, path[0].Y);
-            }
-            if (pos == goal)
-            {
-                //if (enemy.Goal == new Vector2(100, 100))
-                //{
-                //    enemy.Goal = new Vector2(0, 0);
-                //}else if (enemy.Goal == new Vector2(0, 0))
-                //{
-                //    enemy.Goal = new Vector2(200, 200);
-                //}else if (enemy.Goal == new Vector2(100, 0))
-                //{
-                //    enemy.Goal = new Vector2(100, 100);
-                //}
+                e.Update(deltaTime);
+
+                // going to need to put this in a class
+                // https://stackoverflow.com/questions/38402480/c-sharp-declare-a-static-list
+
+
                 
-                //if  (enemy.Goal == new Vector2(path[0].X, path[0].Y))
-                //{
-                //    path.RemoveAt(0);
-                //    enemy.Goal = new Vector2(path[0].X, path[0].Y);
-                //}
-                //else
-                //{
-                //    enemy.Goal = new Vector2(0, 0);
-                //}
-
-
             }
-
 
             //Distance between two points, figure out
             //(Math.Pow(x1-x2,2)+Math.Pow(y1-y2,2)) < (d*d);
@@ -184,8 +155,10 @@ namespace WrestleManiaTD
             map.Draw(spriteBatch);
 
             player.Draw(spriteBatch);
-            enemy.Draw(spriteBatch);
-
+            foreach (Enemy e in enemies)
+            {
+                e.Draw(spriteBatch);
+            }
                       
 
             spriteBatch.End();

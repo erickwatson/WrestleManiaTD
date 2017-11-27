@@ -17,7 +17,9 @@ namespace WrestleManiaTD
         Vector2 velocity = Vector2.Zero;
         // Game Canvas is approx 720x480
 
-        public Vector2 Goal = new Vector2(100,100);
+        List<Coord> path;
+
+        public Vector2 Goal = new Vector2(0,240);
 
         public Vector2 End = new Vector2(720, 240);
         //float pause = 0;
@@ -34,16 +36,33 @@ namespace WrestleManiaTD
         //{
         //    get { return sprite.Bounds; }
         //}
-        public Enemy()//GameManager game)
+        public Enemy(int x, int y)
         {
             //this.game = game;
+            Position = new Vector2(x, y);
             velocity = Vector2.Zero;
+
+            path = new List<Coord>
+                {
+                new Coord() { X = 0, Y = 240 },
+                new Coord() { X = 110, Y = 240 },
+                new Coord() { X = 110, Y = 370 },
+                new Coord() { X = 250, Y = 370 },
+                new Coord() { X = 250, Y = 120 },
+                new Coord() { X = 390, Y = 120 },
+                new Coord() { X = 390, Y = 370 },
+                new Coord() { X = 530, Y = 370 },
+                new Coord() { X = 530, Y = 120 },
+                new Coord() { X = 670, Y = 120 },
+                new Coord() { X = 670, Y = 240 },
+                new Coord() { X = 720, Y = 240 }
+                };
         }
         public void Load(ContentManager content)
         {
             AnimatedTexture animation = new AnimatedTexture(Vector2.Zero, 0, 1, 1);
-            animation.Load(content, "rock_large", 1, 0);
-
+            animation.Load(content, "MachoMan", 10, 6);
+            
             sprite.Add(animation, 16, 0);
         }
 
@@ -51,8 +70,17 @@ namespace WrestleManiaTD
         {
             //(Position - Goal).Normalize
 
-            double temp = Math.Pow(Position.X - End.X, 2) + Math.Pow(Position.Y - End.Y, 2);
-            if (!(temp < (10)))
+            double temp = Math.Pow(Position.X - Goal.X, 2) + Math.Pow(Position.Y - Goal.Y, 2);
+            if (temp < (10))
+            {
+                Coord old = path[0];
+                path.RemoveAt(0);
+                path.Add(old);
+                Goal = new Vector2(path[0].X, path[0].Y);
+            }
+
+            temp = Math.Pow(Position.X - End.X, 2) + Math.Pow(Position.Y - End.Y, 2);
+            if (!(temp < (5)))
             {
                 Vector2 direction = (Goal - Position);
                 direction.Normalize();
